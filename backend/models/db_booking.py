@@ -1,8 +1,9 @@
 from datetime import datetime
 import uuid
-from sqlalchemy import UUID, func
-from sqlalchemy.orm import Mapped, declarative_base, mapped_as_dataclass, mapped_column
+from sqlalchemy import UUID, ForeignKey, func
+from sqlalchemy.orm import Mapped, mapped_as_dataclass, mapped_column, relationship
 from backend.models.base import table_registry
+from backend.models.db_staff import Staff
 
 @table_registry.mapped_as_dataclass
 class Booking():
@@ -16,10 +17,14 @@ class Booking():
         index=True,
         nullable=False
     )
-    phone_number: Mapped[int] = mapped_column(nullable=False)
+    phone_number: Mapped[str] = mapped_column(nullable=False)
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
-    staff_id: Mapped[int] = mapped_column(nullable=False)
+    staff_id: Mapped[int] = mapped_column(
+        ForeignKey("staff.id"),
+        nullable=False
+    )
+    staff: Mapped[Staff] = relationship(init=False)
     start_time: Mapped[datetime] = mapped_column(nullable=False)
     end_time: Mapped[datetime] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(
