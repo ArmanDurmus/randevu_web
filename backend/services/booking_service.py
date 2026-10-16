@@ -4,6 +4,7 @@ from backend.models.db_staff import Staff
 from backend.schemas.booking_schema import BookingRequest, BookingView
 from backend.database import DBSession
 from sqlalchemy import select
+from backend.services import sms_service as sms_sender
 
 class StaffNotFoundError(Exception):
     pass
@@ -58,6 +59,7 @@ async def create_booking(data: BookingRequest, session: DBSession) -> BookingVie
         phone_number=data.phone_number,
         first_name=data.first_name,
         last_name=data.last_name,
+        procedure_id=data.procedure_id,
         staff_id=data.staff.id,
         start_time=data.start_time,
         end_time=data.end_time
@@ -71,10 +73,14 @@ async def create_booking(data: BookingRequest, session: DBSession) -> BookingVie
     await session.commit()
     await session.refresh(new_booking)
 
+    #change the sms message later on
+    sms_sender.send_sms(new_booking.phone_number, "Randevunuz basariyla olusturulmustur")
+
     return BookingView(
         phone_number=new_booking.phone_number,
         first_name=new_booking.first_name,
         last_name=new_booking.last_name,
+        procedure_id=new_booking.procedure_id,
         staff_name=staff_name,
         start_time=new_booking.start_time,
         end_time=new_booking.end_time
@@ -102,6 +108,7 @@ async def update_booking(booking_id: int, data: BookingRequest, session: DBSessi
         raise ValueError(f"Staff with ID {data.staff.id} not found.")
     staff_name = f"{staff.first_name} {staff.last_name}"
 
+    existing_booking.phone_number = data.phone_number
     existing_booking.start_time = data.start_time
     existing_booking.end_time = data.end_time
     existing_booking.staff_id = data.staff_id
@@ -110,10 +117,14 @@ async def update_booking(booking_id: int, data: BookingRequest, session: DBSessi
     await session.commit()
     await session.refresh(existing_booking)
 
+    #Change the messahe later on
+    sms_sender.send_sms(existing_booking.phone_number, "Randevunuzdaki degisiklikler basariyla kaydedildi")
+
     return BookingView(
         phone_number=existing_booking.phone_number,
         first_name=existing_booking.first_name,
         last_name=existing_booking.last_name,
+        procedure=existing_booking.procedure,
         staff_name=staff_name,
         start_time=existing_booking.start_time,
         end_time=existing_booking.end_time

@@ -10,13 +10,10 @@ class Booking():
     __tablename__ = "bookings"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    booking_reference: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), 
-        default=uuid.uuid4, 
-        unique=True, 
-        index=True,
-        nullable=False
-    )
+    procedure_id: Mapped[str] = mapped_column(
+        ForeignKey("procedures.id"),
+        nullable=False)
+    procedure = Mapped[Procedure] = relationship(init=False)
     phone_number: Mapped[str] = mapped_column(nullable=False)
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
