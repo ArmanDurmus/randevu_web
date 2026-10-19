@@ -1,26 +1,19 @@
-from pydantic import BaseModel, model_validator
+from datetime import datetime
+from pydantic import BaseModel
 
 class BookingRequest(BaseModel):
-    phone_number: int
+    phone_number: str
     first_name: str
     last_name: str
     procedure_id: int
-    staff_id = int
-    start_time: str
-    end_time: str
-
-    @model_validator
-    def validate_time_range(self):
-        if self.start_time > self.end_time:
-            raise ValueError
-        return self
+    staff_id: int
+    start_time: datetime
 
 class BookingView(BaseModel):
-    phone_number: int
+    phone_number: str
     first_name: str
     last_name: str
     procedure_id: int
     staff_name: str
-    start_time: str
-    end_time: str
-
+    start_time: datetime
+    end_time: datetime

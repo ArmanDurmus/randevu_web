@@ -12,7 +12,7 @@ def _send_sms_sync(phone_number: str, message: str):
         lang=1
     )
 
-async def send_sms(phone_number: str, message: str):
+async def send_sms_call(phone_number: str, message: str):
     await asyncio.to_thread(
         _send_sms_sync,
         phone_number,

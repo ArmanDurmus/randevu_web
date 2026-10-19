@@ -1,9 +1,9 @@
 from datetime import datetime
-import uuid
-from sqlalchemy import UUID, ForeignKey, func
+from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_as_dataclass, mapped_column, relationship
 from backend.models.base import table_registry
 from backend.models.db_staff import Staff
+from backend.models.db_procedure import Procedure
 
 @table_registry.mapped_as_dataclass
 class Booking():

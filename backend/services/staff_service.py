@@ -1,6 +1,11 @@
+from sqlalchemy import select
+
 from backend.database import DBSession
 from backend.models.db_staff import Staff
 from backend.services.security_service import hash_password, verify_password
+
+class CannotBeOldPassword(Exception):
+    pass
 
 async def change_password(staff_id: int, old_password: str, new_password: str, session: DBSession) -> None:
     """
@@ -14,11 +19,14 @@ async def change_password(staff_id: int, old_password: str, new_password: str, s
     Raises:
         ValueError: If the staff member with the given ID is not found.
     """
+    if old_password == new_password:
+        raise CannotBeOldPassword("Bu parolayi zaten kullaniyorsunuz")
+
     # Fetch the staff member from the database
     staff = await session.get(Staff, staff_id)
     if not staff:
         raise ValueError(f"Staff with ID {staff_id} not found.")
-    if not verify_password(staff.hashed_password, old_password):
+    if not verify_password(old_password, staff.hashed_password):
         #Replace with custom
         raise Exception
 

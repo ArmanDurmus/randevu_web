@@ -62,7 +62,7 @@ async def create_booking(data: BookingRequest, session: DBSession) -> BookingVie
         procedure_id=data.procedure_id,
         staff_id=data.staff.id,
         start_time=data.start_time,
-        end_time=data.end_time
+        end_time=data.start_time.pl
     )
     staff = await session.get(Staff, data.staff.id)
     if not staff:
@@ -83,7 +83,6 @@ async def create_booking(data: BookingRequest, session: DBSession) -> BookingVie
         procedure_id=new_booking.procedure_id,
         staff_name=staff_name,
         start_time=new_booking.start_time,
-        end_time=new_booking.end_time
     )
 
 async def update_booking(booking_id: int, data: BookingRequest, session: DBSession) -> BookingView:
@@ -124,7 +123,7 @@ async def update_booking(booking_id: int, data: BookingRequest, session: DBSessi
         phone_number=existing_booking.phone_number,
         first_name=existing_booking.first_name,
         last_name=existing_booking.last_name,
-        procedure=existing_booking.procedure,
+        procedure_id=existing_booking.procedure_id,
         staff_name=staff_name,
         start_time=existing_booking.start_time,
         end_time=existing_booking.end_time

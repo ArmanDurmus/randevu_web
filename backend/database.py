@@ -6,8 +6,11 @@ from backend.settings import settings
 
 engine = create_async_engine(settings.database_url)
 
-def init_db():
-    table_registry.metadata.create_all(bind=engine)
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(
+            table_registry.metadata.create_all
+        )
 
 async def get_session():
     async with AsyncSession(engine) as session:
