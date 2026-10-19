@@ -7,6 +7,9 @@ from backend.services.security_service import hash_password, verify_password
 class CannotBeOldPassword(Exception):
     pass
 
+class InvalidPasswordError(Exception):
+    pass
+
 async def change_password(staff_id: int, old_password: str, new_password: str, session: DBSession) -> None:
     """
     Change the password of a staff member.
@@ -27,8 +30,7 @@ async def change_password(staff_id: int, old_password: str, new_password: str, s
     if not staff:
         raise ValueError(f"Staff with ID {staff_id} not found.")
     if not verify_password(old_password, staff.hashed_password):
-        #Replace with custom
-        raise Exception
+        raise InvalidPasswordError("Mevcut parola hatali")
 
     staff.hashed_password = hash_password(new_password)
 

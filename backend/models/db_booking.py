@@ -9,11 +9,11 @@ from backend.models.db_procedure import Procedure
 class Booking():
     __tablename__ = "bookings"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    procedure_id: Mapped[str] = mapped_column(
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
+    procedure_id: Mapped[int] = mapped_column(
         ForeignKey("procedures.id"),
         nullable=False)
-    procedure = Mapped[Procedure] = relationship(init=False)
+    procedure: Mapped[Procedure] = relationship(init=False)
     phone_number: Mapped[str] = mapped_column(nullable=False)
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
@@ -25,8 +25,8 @@ class Booking():
     start_time: Mapped[datetime] = mapped_column(nullable=False)
     end_time: Mapped[datetime] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        nullable=False, server_default=func.now()
+        nullable=False, server_default=func.now(), init=False
     )
     updated_at: Mapped[datetime] = mapped_column(
-        nullable=False, server_default=func.now(), onupdate=func.now()
+        nullable=False, server_default=func.now(), onupdate=func.now(), init=False
     )

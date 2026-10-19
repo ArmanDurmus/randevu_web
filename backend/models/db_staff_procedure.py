@@ -8,11 +8,11 @@ from backend.models.db_staff import Staff
 class StaffProcedure():
     __tablename__ = "staff-procedures"
 
-    staff_id = Mapped[int] = mapped_column(
+    staff_id: Mapped[int] = mapped_column(
         ForeignKey("staff.id"),
-        nullable=False
+        primary_key=True
     )
     procedure_id: Mapped[int] = mapped_column(
         ForeignKey("procedures.id"),
-        nullable=False
+        primary_key=True
     )

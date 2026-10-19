@@ -6,7 +6,7 @@ from sqlalchemy import String
 class Staff():
     __tablename__ = "staff"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, init=False)
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)

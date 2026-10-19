@@ -29,7 +29,7 @@ export const bookingPageTemplate = `
       <small class="field-error" id="procedure-error" hidden></small>
     </fieldset>
 
-    <!-- Step 2: Staff (filled from GET /staff/staff-list-by-procedure?procedure_id={id}) -->
+    <!-- Step 2: Staff (filled from GET /staff/list-by-procedure?procedure_id={id}) -->
     <fieldset class="booking-step" id="step-staff" disabled>
       <legend>2. Uzman</legend>
       <label for="staff-select">Uzman seçin</label>

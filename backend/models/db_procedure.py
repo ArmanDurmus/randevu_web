@@ -7,5 +7,5 @@ from backend.models.db_staff import Staff
 class Procedure():
     __tablename__ = "procedures"
 
-    id: Mapped[int] =  mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[int] =  mapped_column(primary_key=True, autoincrement=True, init=False)
     operation: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
